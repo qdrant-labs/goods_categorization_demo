@@ -61,3 +61,18 @@ Run frontend:
 ```bash
 cd frontend; npm install; npx quasar dev
 ```
+
+## Deploy on Render
+
+Single Docker service (FastAPI backend + built frontend → Qdrant). A
+`render.yaml` blueprint is included; the backend now accepts `QDRANT_URL` +
+`QDRANT_API_KEY` for Qdrant Cloud.
+
+1. On Render: **New → Blueprint**, connect this repo (detects the Dockerfile).
+2. Set env vars `QDRANT_URL`, `QDRANT_API_KEY`. Collection name is `goods`.
+3. Use an instance with **≥ 2 GB RAM** (the multilingual model needs it).
+4. Load the `goods` collection with `goods_categorizer/upload_data.py`.
+
+> Note: this is an older demo. Its `qdrant-client` usage predates the current
+> API — verify the client version in `pyproject.toml` is recent enough to talk
+> to current Qdrant Cloud, and update the query call in `categorizer.py` if needed.

@@ -6,7 +6,7 @@ import numpy as np
 
 from qdrant_client import QdrantClient
 
-from goods_categorizer.config import DATA_DIR, QDRANT_HOST, QDRANT_PORT, COLLECTION_NAME
+from goods_categorizer.config import DATA_DIR, QDRANT_URL, QDRANT_API_KEY, QDRANT_HOST, QDRANT_PORT, COLLECTION_NAME
 from goods_categorizer.vectorizer.dm_reduction import DmReduction
 from goods_categorizer.vectorizer.vectorizer import Vectorizer
 
@@ -22,7 +22,10 @@ class GoodsCategorizer:
     def __init__(self):
         self.vectorizer = Vectorizer()
         self.mapper = DmReduction(MAPPER_PATH)
-        self.qdrant_client = QdrantClient(host=QDRANT_HOST, port=QDRANT_PORT)
+        if QDRANT_URL:
+            self.qdrant_client = QdrantClient(url=QDRANT_URL, api_key=QDRANT_API_KEY)
+        else:
+            self.qdrant_client = QdrantClient(host=QDRANT_HOST, port=QDRANT_PORT)
 
     def categorize(self, good: str):
         vector = self.vectorizer.model.encode(good, show_progress_bar=False)
