@@ -29,4 +29,4 @@ RUN python -c 'from sentence_transformers import SentenceTransformer; SentenceTr
 COPY . /code
 COPY --from=build-step /app/dist /code/static
 
-CMD uvicorn goods_categorizer.service:app --host 0.0.0.0 --port 8000 --workers ${WORKERS:-1}
+CMD uvicorn goods_categorizer.service:app --host 0.0.0.0 --port ${PORT:-8000} --workers ${WORKERS:-1}
