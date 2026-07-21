@@ -4,7 +4,8 @@ import os
 from fastapi import FastAPI
 
 from goods_categorizer.categorizer import GoodsCategorizer
-from goods_categorizer.config import DATA_DIR
+from fastapi.staticfiles import StaticFiles
+from goods_categorizer.config import DATA_DIR, ROOT_DIR
 
 app = FastAPI()
 
@@ -30,6 +31,12 @@ async def embed(q: str):
 async def get_graph():
     with open(graph_path) as fd:
         return json.load(fd)
+
+
+# Serve the built front end (dist -> ./static) once the API routes are defined
+static_dir = os.path.join(ROOT_DIR, "static")
+if os.path.exists(static_dir):
+    app.mount("/", StaticFiles(directory=static_dir, html=True))
 
 if __name__ == "__main__":
     import uvicorn
