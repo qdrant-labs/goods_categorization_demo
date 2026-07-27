@@ -8,6 +8,7 @@ import Footer from "./components/Footer";
 import LoadingState from "./components/LoadingState";
 import EmptyState from "./components/EmptyState";
 import CategoryClusterMap from "./components/CategoryClusterMap";
+import HowItWorksModal from "./components/HowItWorksModal";
 
 import { categorize, embed, loadGraph } from "./lib/api";
 
@@ -20,6 +21,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [hasSearched, setHasSearched] = useState(false);
+  const [showHowItWorks, setShowHowItWorks] = useState(false);
 
   useEffect(() => {
     loadGraph().then(setGraph).catch((e) => console.error(e));
@@ -51,7 +53,7 @@ function App() {
       <Header
         theme={theme}
         onToggleTheme={() => setTheme(theme === "dark" ? "light" : "dark")}
-        onOpenHowItWorks={() => {}}
+        onOpenHowItWorks={() => setShowHowItWorks(true)}
       />
 
       <section className="page">
@@ -95,6 +97,10 @@ function App() {
       </section>
 
       <Footer theme={theme} />
+
+      {showHowItWorks && (
+        <HowItWorksModal onClose={() => setShowHowItWorks(false)} />
+      )}
     </main>
   );
 }
