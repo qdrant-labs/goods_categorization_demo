@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from goods_categorizer.categorizer import GoodsCategorizer
-from goods_categorizer.config import DATA_DIR, COLLECTION_NAME, QDRANT_URL
+from goods_categorizer.config import DATA_DIR, COLLECTION_NAME, QDRANT_URL, QDRANT_API_KEY
 
 app = FastAPI()
 
@@ -50,13 +50,16 @@ async def get_graph():
 async def health():
     """Diagnostics: shows what config the service is actually using and whether
     it can reach the Qdrant collection (without exposing the key itself)."""
-    key = os.environ.get("QDRANT_API_KEY", "")
+    raw = os.environ.get("QDRANT_API_KEY", "")
+    bad = [{"pos": i, "codepoint": hex(ord(c))} for i, c in enumerate(raw) if ord(c) > 127]
     info = {
         "qdrant_url": QDRANT_URL,
         "collection": COLLECTION_NAME,
-        "api_key_present": bool(key),
-        "api_key_len": len(key),
-        "api_key_ascii": key.isascii(),
+        "raw_key_len": len(raw),
+        "raw_key_ascii": raw.isascii(),
+        "raw_non_ascii": bad[:20],
+        "sanitized_key_len": len(QDRANT_API_KEY),
+        "sanitized_key_ascii": QDRANT_API_KEY.isascii(),
     }
     try:
         cols = [c.name for c in categorizer.qdrant_client.get_collections().collections]
