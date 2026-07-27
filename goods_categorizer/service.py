@@ -1,11 +1,13 @@
 import json
 import os
+import traceback
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
 from goods_categorizer.categorizer import GoodsCategorizer
-from goods_categorizer.config import DATA_DIR
+from goods_categorizer.config import DATA_DIR, COLLECTION_NAME, QDRANT_URL
 
 app = FastAPI()
 
@@ -23,7 +25,14 @@ graph_path = os.path.join(DATA_DIR, 'graph_en.json')
 
 @app.get("/api/categorize")
 async def categorize(q: str):
-    return {"result": categorizer.categorize(good=q)}
+    try:
+        return {"result": categorizer.categorize(good=q)}
+    except Exception as e:
+        traceback.print_exc()
+        return JSONResponse(
+            status_code=500,
+            content={"error": type(e).__name__, "detail": str(e)[:500]},
+        )
 
 
 @app.get("/api/embed")
@@ -35,6 +44,28 @@ async def embed(q: str):
 async def get_graph():
     with open(graph_path, encoding="utf-8") as fd:
         return json.load(fd)
+
+
+@app.get("/api/health")
+async def health():
+    """Diagnostics: shows what config the service is actually using and whether
+    it can reach the Qdrant collection (without exposing the key itself)."""
+    key = os.environ.get("QDRANT_API_KEY", "")
+    info = {
+        "qdrant_url": QDRANT_URL,
+        "collection": COLLECTION_NAME,
+        "api_key_present": bool(key),
+        "api_key_len": len(key),
+        "api_key_ascii": key.isascii(),
+    }
+    try:
+        cols = [c.name for c in categorizer.qdrant_client.get_collections().collections]
+        info["qdrant_ok"] = True
+        info["collection_exists"] = COLLECTION_NAME in cols
+    except Exception as e:
+        info["qdrant_ok"] = False
+        info["error"] = f"{type(e).__name__}: {str(e)[:200]}"
+    return info
 
 
 if __name__ == "__main__":
