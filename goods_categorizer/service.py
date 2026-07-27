@@ -2,42 +2,41 @@ import json
 import os
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from goods_categorizer.categorizer import GoodsCategorizer
-from fastapi.staticfiles import StaticFiles
-from goods_categorizer.config import DATA_DIR, ROOT_DIR
+from goods_categorizer.config import DATA_DIR
 
 app = FastAPI()
 
-neural_searcher = GoodsCategorizer()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+categorizer = GoodsCategorizer()
 graph_path = os.path.join(DATA_DIR, 'graph_en.json')
 
 
 @app.get("/api/categorize")
 async def categorize(q: str):
-    return {
-        "result": neural_searcher.categorize(good=q)
-    }
+    return {"result": categorizer.categorize(good=q)}
 
 
 @app.get("/api/embed")
 async def embed(q: str):
-    return {
-        "result": neural_searcher.embed(good=q)
-    }
+    return {"result": categorizer.embed(good=q)}
 
 
 @app.get("/api/graph")
 async def get_graph():
-    with open(graph_path) as fd:
+    with open(graph_path, encoding="utf-8") as fd:
         return json.load(fd)
 
 
-# Serve the built front end (dist -> ./static) once the API routes are defined
-static_dir = os.path.join(ROOT_DIR, "static")
-if os.path.exists(static_dir):
-    app.mount("/", StaticFiles(directory=static_dir, html=True))
-
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))

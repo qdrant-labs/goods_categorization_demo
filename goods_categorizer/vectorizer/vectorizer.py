@@ -1,25 +1,20 @@
-from goods_categorizer.config import DATA_DIR
-import os
-import numpy as np
-import json
-from sentence_transformers import SentenceTransformer
+from fastembed import TextEmbedding
+
+from goods_categorizer.config import EMBEDDINGS_MODEL, FASTEMBED_MODEL_PATH
 
 
 class Vectorizer:
+    """Embeds text with the multilingual MiniLM model via fastembed.
+
+    Uses the same model the `goods` collection was built with, so queries and
+    stored vectors share one space.
+    """
+
     def __init__(self):
-        self.model: SentenceTransformer = SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2', device='cpu')
+        if FASTEMBED_MODEL_PATH:
+            self.model = TextEmbedding(EMBEDDINGS_MODEL, specific_model_path=FASTEMBED_MODEL_PATH)
+        else:
+            self.model = TextEmbedding(EMBEDDINGS_MODEL)
 
-
-if __name__ == '__main__':
-    data_path = os.path.join(DATA_DIR, 'good_items.json')
-    vectors_path = os.path.join(DATA_DIR, 'vectors.npy')
-    data = json.load(open(data_path))
-
-    item_names = [record['item'] for record in data]
-
-    vectorizer = Vectorizer()
-    vectors = vectorizer.model.encode(item_names, show_progress_bar=True)
-    print(vectors.shape)
-
-    np.save(open(vectors_path, 'wb'), vectors)
-
+    def embed(self, text: str):
+        return list(self.model.embed([text]))[0].tolist()
