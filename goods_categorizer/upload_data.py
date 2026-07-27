@@ -1,31 +1,52 @@
+"""Build the `goods` collection in Qdrant.
+
+Embeds each (original-language) product name with the multilingual model and
+uploads it with its English category payload. Reads connection details from the
+environment (see config.py): QDRANT_URL, QDRANT_API_KEY, COLLECTION_NAME.
+"""
 import json
 import os
-import numpy as np
 
-from qdrant_client import QdrantClient
-from qdrant_openapi_client.models.models import Distance
+from fastembed import TextEmbedding
+from qdrant_client import QdrantClient, models
 
-from goods_categorizer.config import QDRANT_HOST, QDRANT_PORT, DATA_DIR, COLLECTION_NAME
+from goods_categorizer.config import (
+    DATA_DIR, QDRANT_URL, QDRANT_API_KEY, COLLECTION_NAME,
+    EMBEDDINGS_MODEL, FASTEMBED_MODEL_PATH,
+)
 
-BATCH_SIZE = 128
+BATCH = 512
 
-if __name__ == '__main__':
-    qdrant_client = QdrantClient(host=QDRANT_HOST, port=QDRANT_PORT)
 
-    vectors_path = os.path.join(DATA_DIR, 'vectors.npy')
-    vectors = np.load(vectors_path)
-    vector_size = vectors.shape[1]
+def main():
+    items = json.load(open(os.path.join(DATA_DIR, "good_items.json"), encoding="utf-8"))
+    payload = json.load(open(os.path.join(DATA_DIR, "good_items_en.json"), encoding="utf-8"))
+    texts = [r["item"] for r in items]
 
-    payload_path = os.path.join(DATA_DIR, 'good_items_en.json')
-    payload = json.load(open(payload_path))
+    if FASTEMBED_MODEL_PATH:
+        emb = TextEmbedding(EMBEDDINGS_MODEL, specific_model_path=FASTEMBED_MODEL_PATH)
+    else:
+        emb = TextEmbedding(EMBEDDINGS_MODEL)
+    vectors = list(emb.embed(texts, batch_size=256))
+    dim = len(vectors[0])
 
-    qdrant_client.recreate_collection(collection_name=COLLECTION_NAME, vector_size=vector_size, distance=Distance.COSINE)
-
-    qdrant_client.upload_collection(
-        collection_name=COLLECTION_NAME,
-        vectors=vectors,
-        payload=payload,
-        ids=None,
-        batch_size=BATCH_SIZE,
-        parallel=2
+    client = QdrantClient(url=QDRANT_URL, api_key=QDRANT_API_KEY, timeout=120)
+    if client.collection_exists(COLLECTION_NAME):
+        client.delete_collection(COLLECTION_NAME)
+    client.create_collection(
+        COLLECTION_NAME,
+        vectors_config=models.VectorParams(size=dim, distance=models.Distance.COSINE),
     )
+
+    points = [
+        models.PointStruct(id=i, vector=vectors[i].tolist(), payload=payload[i])
+        for i in range(len(vectors))
+    ]
+    for i in range(0, len(points), BATCH):
+        client.upsert(COLLECTION_NAME, points=points[i:i + BATCH], wait=(i + BATCH >= len(points)))
+
+    print(f"uploaded {client.count(COLLECTION_NAME).count} points to '{COLLECTION_NAME}'")
+
+
+if __name__ == "__main__":
+    main()

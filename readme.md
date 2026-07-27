@@ -1,78 +1,76 @@
-
 # Consumer goods categorisation
 
 ![Demo](./demo.gif)
 
+Type a product name and the demo returns the most likely categories from a
+multi-level category tree. The name is embedded with a multilingual text model
+and matched against a Qdrant collection of category examples — so it works
+across languages and by meaning, not keywords. Adding new categories is just
+adding vectors to the collection; **no retraining** required.
 
-This demo uses product samples from real-life e-commerce categorization.
-Each product name is encoded using a **neural text encoder model** and indexed into the Qdrant vector similarity search engine.
-Once you submit a new product name, it will be encoded using the same neural network and compare against stored references.
+The coloured dots under the results are the category vectors, projected to 2D so
+the space can be rendered (relative distances are approximate).
 
-The colored dots you see under the input box are category vectors used in this demo.
-The vectors have been reduced to 2D using [Umap](https://umap-learn.readthedocs.io/) so that they could be rendered.
-Reduced to 2D point vectors lose some information, so the relative distance on the plain is not always accurate.
-Adding new categories to the system is equivalent to adding a new vector to the collection of examples.
-It means that the list of categories can be expanded and refined **without retraining**.
+## What's inside
 
-## How to
+| | |
+|-|-|
+| Qdrant | Vector database storing the category examples. |
+| `paraphrase-multilingual-MiniLM-L12-v2` | Multilingual embedding model (384-dim). |
+| FastEmbed | Runs the model to embed queries and data. |
+| React (Vite) | The frontend, styled with the Qdrant design system. |
 
-Install
+## Run locally
+
+The backend talks to **Qdrant Cloud** (or any Qdrant). Set the connection env
+vars, then run the API and the frontend separately.
+
+**Backend**
 
 ```bash
-pip install poetry
-poetry install
+pip install "fastapi" "uvicorn" "qdrant-client[fastembed]"
 
-poetry shell  # Enable virtual environment for this project
+export QDRANT_URL="https://<your-cluster>:6333"
+export QDRANT_API_KEY="<your-key>"
+export COLLECTION_NAME="goods"
+
+uvicorn goods_categorizer.service:app --host 0.0.0.0 --port 8000
 ```
 
-Run Qdrant
+**Frontend** (in another terminal)
+
 ```bash
-docker run -v $(pwd)/data/storage:/qdrant/storage -p 6333:6333 generall/qdrant
+cd frontend
+npm install
+npm run dev
 ```
 
-Prepare data and vectors
+The frontend calls the backend on the same origin by default. To point it at a
+backend on a different host, set `VITE_API_BASE` (e.g. `http://localhost:8000`).
+
+## Build the collection
+
+The product data lives in `data/`. To (re)build the `goods` collection in the
+Qdrant cluster named by your env vars:
+
 ```bash
-# Prepare the data
-python -m goods_categorizer.data_parser
-
-# Build embeddings
-python -m goods_categorizer.vectorizer.vectorizer
-
-# Prepare embeddings for projector
-python -m goods_categorizer.convert_to_projector
-
-# Build dimension reduction model for visualisation
-python -m goods_categorizer.vectorizer.dm_reduction
-
-# Translate categories into english (original - Russian)
-python -m goods_categorizer.translate_categories
-
-# Upload data to Qdrant (should be launched on localhost:6333)
 python -m goods_categorizer.upload_data
 ```
 
-Run service:
+## Deploy
 
-```bash
-uvicorn goods_categorizer.service:app --host 0.0.0.0 --port 8000 --workers 1
-```
+The backend (API) and frontend (static site) are deployed as two services
+against Qdrant Cloud.
 
-Run frontend:
-```bash
-cd frontend; npm install; npx quasar dev
-```
+**Backend — Railway (or any Docker host)**
 
-## Deploy on Render
+1. Deploy this repo from GitHub. The `Dockerfile` installs deps, bakes the
+   embedding model, and runs FastAPI bound to `$PORT`.
+2. Set env vars: `QDRANT_URL`, `QDRANT_API_KEY`, `COLLECTION_NAME=goods`.
+3. Copy the service URL.
 
-Single Docker service (FastAPI backend + built frontend → Qdrant). A
-`render.yaml` blueprint is included; the backend now accepts `QDRANT_URL` +
-`QDRANT_API_KEY` for Qdrant Cloud.
+**Frontend — Vercel**
 
-1. On Render: **New → Blueprint**, connect this repo (detects the Dockerfile).
-2. Set env vars `QDRANT_URL`, `QDRANT_API_KEY`. Collection name is `goods`.
-3. Use an instance with **≥ 2 GB RAM** (the multilingual model needs it).
-4. Load the `goods` collection with `goods_categorizer/upload_data.py`.
-
-> Note: this is an older demo. Its `qdrant-client` usage predates the current
-> API — verify the client version in `pyproject.toml` is recent enough to talk
-> to current Qdrant Cloud, and update the query call in `categorizer.py` if needed.
+1. Import this repo with **Root Directory = `frontend`** (Vite is auto-detected).
+2. Set `VITE_API_BASE` to the backend URL from the step above.
+3. Deploy — the resulting URL is the public demo.
