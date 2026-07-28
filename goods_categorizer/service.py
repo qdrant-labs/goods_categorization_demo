@@ -65,6 +65,8 @@ async def health():
         cols = [c.name for c in categorizer.qdrant_client.get_collections().collections]
         info["qdrant_ok"] = True
         info["collection_exists"] = COLLECTION_NAME in cols
+        if info["collection_exists"]:
+            info["points"] = categorizer.qdrant_client.count(COLLECTION_NAME).count
     except Exception as e:
         info["qdrant_ok"] = False
         info["error"] = f"{type(e).__name__}: {str(e)[:200]}"
