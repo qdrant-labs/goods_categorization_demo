@@ -15,6 +15,9 @@ import { categorize, loadGraph } from "./lib/api";
 function App() {
   const [theme, setTheme] = useState("light");
   const [query, setQuery] = useState("Система охлаждения CPU");
+  // The query the results actually reflect — only updates on a real search, so
+  // the "Top categories for …" title doesn't change while you're still typing.
+  const [submittedQuery, setSubmittedQuery] = useState("Система охлаждения CPU");
   const [categories, setCategories] = useState([]);
   const [graph, setGraph] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -32,6 +35,7 @@ function App() {
     const clean = searchQuery.trim();
     if (!clean) return;
     setQuery(clean);
+    setSubmittedQuery(clean);
     setLoading(true);
     setError("");
     setHasSearched(true);
@@ -87,7 +91,7 @@ function App() {
             <div className="results-header">
               <div>
                 <p className="eyebrow">Vector results</p>
-                <h2>Top categories for “{query}”</h2>
+                <h2>Top categories for “{submittedQuery}”</h2>
               </div>
               <span className="result-count">{categories.length} categories</span>
             </div>
