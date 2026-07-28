@@ -50,15 +50,21 @@ function CategoryClusterMap({ graph, queryPoint }) {
           );
         })}
 
-        {queryPoint && (
-          <span
-            className="query-marker"
-            style={(() => {
-              const p = toPos(queryPoint);
-              return { left: `${p.left}%`, top: `${p.top}%` };
-            })()}
-          />
-        )}
+        {queryPoint && (() => {
+          const p = toPos(queryPoint);
+          // Keep the "Query" label inside the box: flip it above when the marker
+          // is near the bottom, and nudge it left/right near the sides.
+          const cls = ["query-marker"];
+          if (p.top > 68) cls.push("q-up");
+          if (p.left < 16) cls.push("q-left");
+          else if (p.left > 84) cls.push("q-right");
+          return (
+            <span
+              className={cls.join(" ")}
+              style={{ left: `${p.left}%`, top: `${p.top}%` }}
+            />
+          );
+        })()}
       </div>
 
       <div className="cluster-notes">
