@@ -1311,3 +1311,26 @@ a {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
 }
+
+/* Keep the tooltip inside the map near the edges. */
+.cluster-dot.t-down .cluster-tooltip {
+  top: calc(100% + 10px);
+  bottom: auto;
+}
+
+.cluster-dot.t-start .cluster-tooltip {
+  left: 0;
+  transform: translateX(0) translateY(6px);
+}
+.cluster-dot.t-start:hover .cluster-tooltip {
+  transform: translateX(0) translateY(0);
+}
+
+.cluster-dot.t-end .cluster-tooltip {
+  left: auto;
+  right: 0;
+  transform: translateX(0) translateY(6px);
+}
+.cluster-dot.t-end:hover .cluster-tooltip {
+  transform: translateX(0) translateY(0);
+}
