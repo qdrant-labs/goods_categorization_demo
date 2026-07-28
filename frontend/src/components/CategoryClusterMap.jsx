@@ -36,10 +36,16 @@ function CategoryClusterMap({ graph, queryPoint }) {
       <div className="cluster-map">
         {graph.map((g, i) => {
           const pos = toPos(g.vec);
+          // Edge-aware tooltip: below the dot near the top, and anchored
+          // inward near the sides, so it never clips at the border.
+          const cls = ["cluster-dot", colorFor(g.top_category)];
+          if (pos.top < 20) cls.push("t-down");
+          if (pos.left < 14) cls.push("t-start");
+          else if (pos.left > 86) cls.push("t-end");
           return (
             <span
               key={i}
-              className={`cluster-dot ${colorFor(g.top_category)}`}
+              className={cls.join(" ")}
               style={{ left: `${pos.left}%`, top: `${pos.top}%` }}
             >
               <span className="cluster-tooltip">
