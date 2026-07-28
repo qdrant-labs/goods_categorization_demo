@@ -619,6 +619,22 @@ a {
   text-transform: uppercase;
   letter-spacing: 0.08em;
   box-shadow: var(--shadow);
+
+  white-space: nowrap;
+}
+
+/* Keep the label inside the map near the edges. */
+.query-marker.q-up::after {
+  top: auto;
+  bottom: calc(100% + 8px);
+}
+
+.query-marker.q-left::after {
+  transform: translateX(-10%);
+}
+
+.query-marker.q-right::after {
+  transform: translateX(-90%);
 }
 
 .cluster-notes {
