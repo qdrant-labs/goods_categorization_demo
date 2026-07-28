@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import "./App.css";
 
@@ -10,13 +10,12 @@ import EmptyState from "./components/EmptyState";
 import CategoryClusterMap from "./components/CategoryClusterMap";
 import HowItWorksModal from "./components/HowItWorksModal";
 
-import { categorize, embed, loadGraph } from "./lib/api";
+import { categorize, loadGraph } from "./lib/api";
 
 function App() {
   const [theme, setTheme] = useState("light");
   const [query, setQuery] = useState("Система охлаждения CPU");
   const [categories, setCategories] = useState([]);
-  const [queryPoint, setQueryPoint] = useState(null);
   const [graph, setGraph] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -37,9 +36,7 @@ function App() {
     setError("");
     setHasSearched(true);
     try {
-      const [cats, point] = await Promise.all([categorize(clean), embed(clean)]);
-      setCategories(cats);
-      setQueryPoint(point);
+      setCategories(await categorize(clean));
     } catch (err) {
       console.error(err);
       setError("Categorization failed.");
@@ -47,6 +44,26 @@ function App() {
       setLoading(false);
     }
   }
+
+  // Place the query marker at the (score-weighted) position of its top matched
+  // categories in the map — "your query landed here". Derived from the current
+  // results + the static graph, so no separate projection is needed.
+  const queryPoint = useMemo(() => {
+    if (!categories.length || !graph.length) return null;
+    const byCat = new Map(
+      graph.map((g) => [(g.category || "").trim().toLowerCase(), g])
+    );
+    let x = 0, y = 0, w = 0;
+    for (const c of categories.slice(0, 3)) {
+      const g = byCat.get((c.category || "").trim().toLowerCase());
+      if (!g) continue;
+      const weight = Math.max(Number(c.score) || 0, 0.01);
+      x += g.vec[0] * weight;
+      y += g.vec[1] * weight;
+      w += weight;
+    }
+    return w ? [x / w, y / w] : null;
+  }, [categories, graph]);
 
   return (
     <main className={`app ${theme}`}>
@@ -65,10 +82,8 @@ function App() {
           error={error}
         />
 
-        {loading ? (
-          <LoadingState />
-        ) : categories.length > 0 ? (
-          <section className="results-section">
+        {categories.length > 0 ? (
+          <section className={`results-section${loading ? " is-loading" : ""}`}>
             <div className="results-header">
               <div>
                 <p className="eyebrow">Vector results</p>
@@ -91,6 +106,8 @@ function App() {
 
             <CategoryClusterMap graph={graph} queryPoint={queryPoint} />
           </section>
+        ) : loading ? (
+          <LoadingState />
         ) : (
           hasSearched && <EmptyState />
         )}

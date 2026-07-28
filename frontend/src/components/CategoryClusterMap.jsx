@@ -27,9 +27,9 @@ function CategoryClusterMap({ graph, queryPoint }) {
   const topCats = [...new Set(graph.map((g) => g.top_category))];
   const colorFor = (t) => PALETTE[topCats.indexOf(t) % PALETTE.length];
 
-  const allPoints = graph.map((g) => g.vec);
-  if (queryPoint) allPoints.push(queryPoint);
-  const toPos = normalizer(allPoints);
+  // Normalize on the category points only, so the dots stay fixed across
+  // queries — only the query marker moves.
+  const toPos = normalizer(graph.map((g) => g.vec));
 
   return (
     <section className="cluster-section">
