@@ -393,6 +393,12 @@ a {
 
 .results-section {
   margin-top: 22px;
+  transition: opacity 0.15s ease;
+}
+
+/* Subtle feedback while a new query loads — the chart stays mounted (no shake). */
+.results-section.is-loading {
+  opacity: 0.6;
 }
 
 .results-header {
