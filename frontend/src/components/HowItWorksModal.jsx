@@ -51,7 +51,7 @@ function HowItWorksModal({ onClose }) {
               <div className="mode-card">
                 <span>Multilingual</span>
                 <p>
-                  Type a product in any language — the model maps meaning across
+                  Type a product in any language, and the model maps meaning across
                   languages, so “running shoes” and “кроссовки” land together.
                 </p>
               </div>
@@ -65,7 +65,7 @@ function HowItWorksModal({ onClose }) {
               <div className="mode-card">
                 <span>Cluster map</span>
                 <p>
-                  Each dot is a category, positioned by similarity — related
+                  Each dot is a category, positioned by similarity, so related
                   categories cluster together in the vector space.
                 </p>
               </div>
