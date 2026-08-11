@@ -88,7 +88,13 @@ function CategoryClusterMap({ graph, queryPoint }) {
       <div className="cluster-notes">
         <ul>
           <li>Each dot is a product category, coloured by its top-level group.</li>
-          <li>The ringed marker shows where your query landed in the space.</li>
+          {/* Only promise the marker when it is actually on the map. The
+              backend returns no projection unless the UMAP mapper is bundled,
+              and a caption describing a marker that isn't there is worse than
+              no caption. */}
+          {queryPoint && (
+            <li>The ringed marker is your query, projected into the same space.</li>
+          )}
         </ul>
       </div>
     </section>
