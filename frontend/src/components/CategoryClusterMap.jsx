@@ -1,8 +1,11 @@
 // Plots the category embedding space (graph.json, projected to 2D by the demo's
 // UMAP mapper) with each category coloured by its top-level category, and marks
 // where the query landed (from /api/embed).
+// One colour per top-level group. A shorter palette wrapped, so unrelated
+// groups shared a swatch and the map's own colour contract broke.
 const PALETTE = [
   "blue", "pink", "indigo", "green", "red", "yellow", "purple", "mint", "rose",
+  "teal", "amber", "lime", "slate", "plum", "sky", "brick",
 ];
 
 const PAD = 8;
@@ -24,7 +27,7 @@ function normalizer(points) {
 function CategoryClusterMap({ graph, queryPoint }) {
   if (!graph || graph.length === 0) return null;
 
-  const topCats = [...new Set(graph.map((g) => g.top_category))];
+  const topCats = [...new Set(graph.map((g) => g.top_category))].sort();
   const colorFor = (t) => PALETTE[topCats.indexOf(t) % PALETTE.length];
 
   // Normalize on the category points only, so the dots stay fixed across
@@ -72,6 +75,15 @@ function CategoryClusterMap({ graph, queryPoint }) {
           );
         })()}
       </div>
+
+      <ul className="cluster-legend">
+        {topCats.map((t) => (
+          <li className="cluster-legend-item" key={t}>
+            <span className={`cluster-legend-swatch ${colorFor(t)}`} />
+            {t}
+          </li>
+        ))}
+      </ul>
 
       <div className="cluster-notes">
         <ul>

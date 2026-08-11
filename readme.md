@@ -59,5 +59,12 @@ uvicorn goods_categorizer.service:app --host 0.0.0.0 --port 8000 --workers 1
 
 Run frontend:
 ```bash
-cd frontend; npm install; npx quasar dev
+cd frontend; npm install; npm run dev
 ```
+
+### Frontend Environment Variables
+
+| Variable | Purpose |
+|-|-|
+| `VITE_API_BASE` | Origin of the backend API. Leave unset when the frontend and API share an origin. A Vercel deploy needs this set, because the API is not co-hosted. |
+| `VITE_MOCK` | Set to `1` to run the UI against sample data with no backend. Useful for working on the frontend alone. |

@@ -574,6 +574,43 @@ a {
   color: #dec64f;
 }
 
+/* Seven more so every top-level group gets its own colour. With 16 groups and a
+   9-colour palette the index wrapped, and unrelated groups shared a swatch. */
+.cluster-dot.teal {
+  background: #3fb8c4;
+  color: #3fb8c4;
+}
+
+.cluster-dot.amber {
+  background: #e39a3c;
+  color: #e39a3c;
+}
+
+.cluster-dot.lime {
+  background: #a7c957;
+  color: #a7c957;
+}
+
+.cluster-dot.slate {
+  background: #8592a8;
+  color: #8592a8;
+}
+
+.cluster-dot.plum {
+  background: #b0559b;
+  color: #b0559b;
+}
+
+.cluster-dot.sky {
+  background: #4ec3e0;
+  color: #4ec3e0;
+}
+
+.cluster-dot.brick {
+  background: #c05746;
+  color: #c05746;
+}
+
 .cluster-dot.is-match {
   width: 18px;
   height: 18px;
@@ -636,6 +673,50 @@ a {
 .query-marker.q-right::after {
   transform: translateX(-90%);
 }
+
+/* Names every colour, so the grouping survives the map being read in greyscale
+   or by anyone who can't reach the hover-only tooltips. */
+.cluster-legend {
+  margin-top: 12px;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.cluster-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cluster-legend-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex: none;
+}
+
+.cluster-legend-swatch.blue { background: #6aa6ff; }
+.cluster-legend-swatch.pink { background: #dc245b; }
+.cluster-legend-swatch.indigo { background: #6978e8; }
+.cluster-legend-swatch.green { background: #65c986; }
+.cluster-legend-swatch.red { background: #e56d64; }
+.cluster-legend-swatch.yellow { background: #dec64f; }
+.cluster-legend-swatch.purple { background: #9a72e9; }
+.cluster-legend-swatch.mint { background: #5fd7b5; }
+.cluster-legend-swatch.rose { background: #e76b97; }
+.cluster-legend-swatch.teal { background: #3fb8c4; }
+.cluster-legend-swatch.amber { background: #e39a3c; }
+.cluster-legend-swatch.lime { background: #a7c957; }
+.cluster-legend-swatch.slate { background: #8592a8; }
+.cluster-legend-swatch.plum { background: #b0559b; }
+.cluster-legend-swatch.sky { background: #4ec3e0; }
+.cluster-legend-swatch.brick { background: #c05746; }
 
 .cluster-notes {
   margin-top: 8px;
