@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import "./App.css";
 
@@ -10,7 +10,7 @@ import EmptyState from "./components/EmptyState";
 import CategoryClusterMap from "./components/CategoryClusterMap";
 import HowItWorksModal from "./components/HowItWorksModal";
 
-import { categorize, loadGraph } from "./lib/api";
+import { categorize, embed, loadGraph } from "./lib/api";
 
 function App() {
   const [theme, setTheme] = useState("light");
@@ -24,6 +24,10 @@ function App() {
   const [error, setError] = useState("");
   const [hasSearched, setHasSearched] = useState(false);
   const [showHowItWorks, setShowHowItWorks] = useState(false);
+  // Where the query itself lands in the map, projected by the same UMAP mapper
+  // that produced the category coordinates. Null when /api/embed can't provide
+  // one, in which case the marker simply doesn't render.
+  const [queryPoint, setQueryPoint] = useState(null);
 
   useEffect(() => {
     loadGraph().then(setGraph).catch((e) => console.error(e));
@@ -39,8 +43,14 @@ function App() {
     setLoading(true);
     setError("");
     setHasSearched(true);
+    setQueryPoint(null);
     try {
-      setCategories(await categorize(clean));
+      // The marker is the query's own projection, not an average of the
+      // categories it matched, so a query that matches nothing lands where it
+      // actually is rather than confidently inside a cluster.
+      const [cats, point] = await Promise.all([categorize(clean), embed(clean)]);
+      setCategories(cats);
+      setQueryPoint(point);
     } catch (err) {
       console.error(err);
       setError("Categorization failed.");
@@ -48,26 +58,6 @@ function App() {
       setLoading(false);
     }
   }
-
-  // Place the query marker at the (score-weighted) position of its top matched
-  // categories in the map — "your query landed here". Derived from the current
-  // results + the static graph, so no separate projection is needed.
-  const queryPoint = useMemo(() => {
-    if (!categories.length || !graph.length) return null;
-    const byCat = new Map(
-      graph.map((g) => [(g.category || "").trim().toLowerCase(), g])
-    );
-    let x = 0, y = 0, w = 0;
-    for (const c of categories.slice(0, 3)) {
-      const g = byCat.get((c.category || "").trim().toLowerCase());
-      if (!g) continue;
-      const weight = Math.max(Number(c.score) || 0, 0.01);
-      x += g.vec[0] * weight;
-      y += g.vec[1] * weight;
-      w += weight;
-    }
-    return w ? [x / w, y / w] : null;
-  }, [categories, graph]);
 
   return (
     <main className={`app ${theme}`}>
