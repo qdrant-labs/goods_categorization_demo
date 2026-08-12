@@ -1,5 +1,5 @@
 // Plots the category embedding space (graph.json, projected to 2D by the demo's
-// UMAP mapper) with each category coloured by its top-level category, and marks
+// UMAP mapper) with each category colored by its top-level category, and marks
 // where the query landed (from /api/embed).
 // One colour per top-level group. A shorter palette wrapped, so unrelated
 // groups shared a swatch and the map's own colour contract broke.
@@ -87,7 +87,7 @@ function CategoryClusterMap({ graph, queryPoint }) {
 
       <div className="cluster-notes">
         <ul>
-          <li>Each dot is a product category, coloured by its top-level group.</li>
+          <li>Each dot is a product category, colored by its top-level group.</li>
           {/* Only promise the marker when it is actually on the map. The
               backend returns no projection unless the UMAP mapper is bundled,
               and a caption describing a marker that isn't there is worse than

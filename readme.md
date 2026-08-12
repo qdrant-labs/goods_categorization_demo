@@ -1,8 +1,5 @@
 
-# Consumer goods categorisation
-
-![Demo](./demo.gif)
-
+# Consumer Goods Categorization
 
 This demo uses product samples from real-life e-commerce categorization.
 Each product name is encoded using a **neural text encoder model** and indexed into the Qdrant vector similarity search engine.
