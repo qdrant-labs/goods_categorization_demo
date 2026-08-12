@@ -1,8 +1,12 @@
 // Plots the category embedding space (graph.json, projected to 2D by the demo's
-// UMAP mapper) with each category coloured by its top-level category, and marks
+// UMAP mapper) with each category colored by its top-level category, and marks
 // where the query landed (from /api/embed).
+//
+// One color per top-level group. A shorter palette wrapped, so unrelated groups
+// shared a swatch and the map's own color contract broke.
 const PALETTE = [
   "blue", "pink", "indigo", "green", "red", "yellow", "purple", "mint", "rose",
+  "teal", "amber", "lime", "slate", "plum", "sky", "brick",
 ];
 
 const PAD = 8;
@@ -24,7 +28,7 @@ function normalizer(points) {
 function CategoryClusterMap({ graph, queryPoint }) {
   if (!graph || graph.length === 0) return null;
 
-  const topCats = [...new Set(graph.map((g) => g.top_category))];
+  const topCats = [...new Set(graph.map((g) => g.top_category))].sort();
   const colorFor = (t) => PALETTE[topCats.indexOf(t) % PALETTE.length];
 
   // Normalize on the category points only, so the dots stay fixed across
@@ -73,10 +77,23 @@ function CategoryClusterMap({ graph, queryPoint }) {
         })()}
       </div>
 
+      <ul className="cluster-legend">
+        {topCats.map((t) => (
+          <li className="cluster-legend-item" key={t}>
+            <span className={`cluster-legend-swatch ${colorFor(t)}`} />
+            {t}
+          </li>
+        ))}
+      </ul>
+
       <div className="cluster-notes">
         <ul>
-          <li>Each dot is a product category, coloured by its top-level group.</li>
-          <li>The ringed marker shows where your query landed in the space.</li>
+          <li>Each dot is a product category, colored by its top-level group.</li>
+          {/* Only promise the marker when it is actually on the map. The backend
+              returns no projection unless the UMAP mapper is bundled. */}
+          {queryPoint && (
+            <li>The ringed marker is your query, projected into the same space.</li>
+          )}
         </ul>
       </div>
     </section>

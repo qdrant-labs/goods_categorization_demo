@@ -8,7 +8,7 @@ and matched against a Qdrant collection of category examples — so it works
 across languages and by meaning, not keywords. Adding new categories is just
 adding vectors to the collection; **no retraining** required.
 
-The coloured dots under the results are the category vectors, projected to 2D so
+The colored dots under the results are the category vectors, projected to 2D so
 the space can be rendered (relative distances are approximate).
 
 ## What's inside

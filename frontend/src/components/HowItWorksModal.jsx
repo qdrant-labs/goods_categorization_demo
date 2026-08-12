@@ -17,7 +17,7 @@ function HowItWorksModal({ onClose }) {
             <div className="pipeline-node">
               <span>1</span>
               <strong>Catalog</strong>
-              <p>Thousands of product categories across a multi-level category tree.</p>
+              <p>175 product categories across a two-level category tree.</p>
             </div>
 
             <div className="pipeline-arrow">→</div>
