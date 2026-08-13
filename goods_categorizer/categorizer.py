@@ -20,10 +20,16 @@ class GoodsCategorizer:
             with_payload=True,
         ).points
 
+        # Keep the closest example per category rather than summing the hits.
+        # Summing made the number unbounded: two example products from the same
+        # category inside the top 3 added together and the UI showed a "score"
+        # above 1, which cannot be a cosine similarity. It also rewarded a
+        # category for appearing twice over one that matched better once.
         scores = defaultdict(float)
         for hit in hits:
             payload = hit.payload or {}
-            scores[(payload.get("top_category"), payload.get("category"))] += hit.score
+            cat = (payload.get("top_category"), payload.get("category"))
+            scores[cat] = max(scores[cat], hit.score)
 
         ranked = sorted(scores.items(), key=lambda x: x[1], reverse=True)
         return {
