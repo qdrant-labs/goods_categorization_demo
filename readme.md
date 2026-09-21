@@ -106,12 +106,24 @@ re-runs the whole thing.
 
 | | top-1 correct | within top-3 | p50 | p95 |
 |-|-|-|-|-|
-| new, mxbai | **81.6%** | **95.9%** | **124ms** | **182ms** |
+| new, mxbai | 81.6% | 95.9% | **124ms** | **182ms** |
 | old, Railway | 79.6% | 95.9% | 175ms | 240ms |
 
-Better on accuracy and faster, which was not guaranteed: the new index is 179
-category labels against the old one's 2,964 subcategory examples, so it had
-16 times less text to match against.
+**The accuracy difference is not real.** 81.6% against 79.6% is 40 queries out
+of 49 against 39, and the paired counts show why that means nothing: the two
+systems agree on 34 queries, the new one wins 8 the old one loses, and the old
+one wins 7 the new one loses. An exact sign test on those 15 discordant pairs
+gives p = 1.00. Read the table as a draw on accuracy and a clear win on latency.
+
+Holding the draw is itself the result worth stating, because it was not
+guaranteed: the new index is 179 category labels against the old one's 2,964
+subcategory examples, so it has 16 times less text to match against, in a
+language the collection was not built in.
+
+The 15 queries the two systems disagree on are listed by `test/compare.mjs`.
+Both sides fail on the same kind of item, one that sits between groups: a
+washing machine is an appliance or a household good, and ski boots are footwear
+or sports equipment.
 
 ### What Did Not Work
 
