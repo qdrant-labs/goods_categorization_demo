@@ -17,7 +17,7 @@ function HowItWorksModal({ onClose }) {
             <div className="pipeline-node">
               <span>1</span>
               <strong>Catalog</strong>
-              <p>175 product categories across a two-level category tree.</p>
+              <p>179 product categories across a two-level category tree.</p>
             </div>
 
             <div className="pipeline-arrow">→</div>
@@ -25,7 +25,7 @@ function HowItWorksModal({ onClose }) {
             <div className="pipeline-node">
               <span>2</span>
               <strong>Embeddings</strong>
-              <p>Your query is turned into a vector with multilingual MiniLM-L12.</p>
+              <p>Qdrant Cloud Inference turns your query into a vector with mxbai-embed-large-v1, inside the cluster.</p>
             </div>
 
             <div className="pipeline-arrow">→</div>
@@ -49,10 +49,10 @@ function HowItWorksModal({ onClose }) {
             <h3>Good to know</h3>
             <div className="mode-grid">
               <div className="mode-card">
-                <span>Multilingual</span>
+                <span>In-cluster</span>
                 <p>
-                  Type a product in any language, and the model maps meaning across
-                  languages, so “running shoes” and “кроссовки” land together.
+                  The query is embedded by Qdrant itself, so the demo ships no
+                  model and runs on two services rather than three.
                 </p>
               </div>
               <div className="mode-card">

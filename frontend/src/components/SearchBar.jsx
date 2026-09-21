@@ -19,7 +19,7 @@ function SearchBar({
         <input
           value={query}
           onChange={(event) => setQuery(event.target.value)}
-          placeholder="Search a product, category, or multilingual query..."
+          placeholder="Search a product or category..."
         />
 
         {query && (

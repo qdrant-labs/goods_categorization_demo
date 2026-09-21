@@ -9,3 +9,7 @@ data/*.pkl
 data/*.old
 frontend/node_modules/
 frontend/dist/
+.env
+.env.local
+.vercel
+frontend/build/

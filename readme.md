@@ -1,76 +1,159 @@
-# Consumer goods categorisation
+# Semantic Product Categorization
 
-![Demo](./demo.gif)
+Type a product name and get the catalog categories it belongs to, ranked. The
+cluster map shows where the query landed among the categories.
 
-Type a product name and the demo returns the most likely categories from a
-multi-level category tree. The name is embedded with a multilingual text model
-and matched against a Qdrant collection of category examples — so it works
-across languages and by meaning, not keywords. Adding new categories is just
-adding vectors to the collection; **no retraining** required.
+## Two Services, Not Three
 
-The colored dots under the results are the category vectors, projected to 2D so
-the space can be rendered (relative distances are approximate).
+The demo runs on **Vercel** and **Qdrant Cloud**, and nothing else.
 
-## What's inside
+The query is embedded inside the cluster by **Qdrant Cloud Inference**, so there
+is no model to load and no Python process to host. What used to be a FastAPI
+container on Railway is one serverless function that posts JSON to Qdrant:
+[`frontend/api/categorize.ts`](frontend/api/categorize.ts). It has no
+dependencies.
+
+## The Language Change
+
+This is the one demo where the port changed what the demo can answer, so it is
+stated up front.
+
+The old collection held 2,964 **Russian** subcategory names, embedded with
+`paraphrase-multilingual-MiniLM-L12-v2`. That model is not in the Cloud
+Inference catalog, and neither is any other multilingual model: checked
+`paraphrase-multilingual-mpnet-base-v2` and `multilingual-e5-large` as well.
+Keeping the language meant keeping an external provider key, which is the third
+vendor this work exists to remove.
+
+So the demo is now **English only**. The new collection holds the 179 English
+category labels, which were always the only answers this endpoint could return:
+the API sent back `top_category` and `category`, never the subcategory the
+vectors were built from.
+
+Four strings in the UI claimed multilingual support and are corrected, along
+with the Russian and German example chips, which would now fail.
+
+## What's Inside
 
 | | |
 |-|-|
-| Qdrant | Vector database storing the category examples. |
-| `paraphrase-multilingual-MiniLM-L12-v2` | Multilingual embedding model (384-dim). |
-| FastEmbed | Runs the model to embed queries and data. |
-| React (Vite) | The frontend, styled with the Qdrant design system. |
+| Qdrant | Holds the category vectors and answers the nearest-neighbor query. |
+| Qdrant Cloud Inference | Embeds the query in-cluster, so the app ships no model. |
+| `mxbai-embed-large-v1` | The embedding model. 1024 dimensions. |
+| React (Vite) on Vercel | The frontend, styled with the Qdrant design system. |
 
-## Run locally
+| Component | |
+|-|-|
+| `frontend/api/categorize.ts` | `GET /api/categorize?q=`. The whole backend. |
+| `indexer/build_en.py` | Builds the category collection. Standard library only. |
+| `data/categories_en.json` | The 179 label pairs, derived from the old collection. |
 
-The backend talks to **Qdrant Cloud** (or any Qdrant). Set the connection env
-vars, then run the API and the frontend separately.
+## How It Works
 
-**Backend**
+Each category is one point: the text `"Top / Category"` embedded with mxbai. The
+parent is included because 2 category names repeat across groups, with
+"Accessories" sitting under both Auto and Computers.
 
-```bash
-pip install "fastapi" "uvicorn" "qdrant-client[fastembed]"
+A query is embedded in-cluster and matched against those 179 points. The top 3
+are kept, one score per category, taking the closest hit rather than summing
+them: summing made the number unbounded, so two hits from one category could
+show a "score" above 1, which cannot be a cosine.
 
-export QDRANT_URL="https://<your-cluster>:6333"
-export QDRANT_API_KEY="<your-key>"
-export COLLECTION_NAME="goods"
-
-uvicorn goods_categorizer.service:app --host 0.0.0.0 --port 8000
-```
-
-**Frontend** (in another terminal)
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-The frontend calls the backend on the same origin by default. To point it at a
-backend on a different host, set `VITE_API_BASE` (e.g. `http://localhost:8000`).
-
-## Build the collection
-
-The product data lives in `data/`. To (re)build the `goods` collection in the
-Qdrant cluster named by your env vars:
+## Build the Collection
 
 ```bash
-python -m goods_categorizer.upload_data
+cp .env.example .env    # then fill in QDRANT_URL and QDRANT_API_KEY
+python indexer/build_en.py
 ```
 
-## Deploy
+179 points, about 2,100 inference tokens, a few seconds. Pass
+`--from-collection goods` to re-derive `data/categories_en.json` from an
+existing collection's payloads first.
 
-The backend (API) and frontend (static site) are deployed as two services
-against Qdrant Cloud.
+## Run Locally
 
-**Backend — Railway (or any Docker host)**
+**Prerequisites:** Node 20 or newer, and a Qdrant Cloud cluster with Cloud
+Inference enabled. A local Qdrant in Docker cannot serve this demo, because
+nothing would embed the query.
 
-1. Deploy this repo from GitHub. The `Dockerfile` installs deps, bakes the
-   embedding model, and runs FastAPI bound to `$PORT`.
-2. Set env vars: `QDRANT_URL`, `QDRANT_API_KEY`, `COLLECTION_NAME=goods`.
-3. Copy the service URL.
+```bash
+npm i -g vercel
+cd frontend && vercel dev
+```
 
-**Frontend — Vercel**
+## Configuration
 
-1. Import this repo with **Root Directory = `frontend`** (Vite is auto-detected).
-2. Set `VITE_API_BASE` to the backend URL from the step above.
-3. Deploy — the resulting URL is the public demo.
+| Variable | Default | |
+|-|-|-|
+| `QDRANT_URL` | none | Qdrant Cloud endpoint |
+| `QDRANT_API_KEY` | none | Qdrant Cloud key |
+| `COLLECTION_NAME` | `goods-en` | collection to search |
+| `EMBEDDINGS_MODEL` | `mixedbread-ai/mxbai-embed-large-v1` | the in-cluster encoder |
+| `TOP_K` | `3` | categories returned |
+
+`VITE_API_BASE` must be **unset**. It pointed the frontend at the old Railway
+API; empty means same-origin, which is where the function now is.
+
+## Measured Against the Backend It Replaces
+
+The index changed, so comparing rankings would say nothing. What matters is
+whether the answer is right, so both systems are scored against the same labels.
+
+49 English product queries, each labeled with its expected top category, written
+by hand from the taxonomy in `data/categories_en.json`. The debatable ones are
+debatable for both systems. 3 repetitions, interleaved, and `test/compare.mjs`
+re-runs the whole thing.
+
+| | top-1 correct | within top-3 | p50 | p95 |
+|-|-|-|-|-|
+| new, mxbai | **81.6%** | **95.9%** | **124ms** | **182ms** |
+| old, Railway | 79.6% | 95.9% | 175ms | 240ms |
+
+Better on accuracy and faster, which was not guaranteed: the new index is 179
+category labels against the old one's 2,964 subcategory examples, so it had
+16 times less text to match against.
+
+### What Did Not Work
+
+`all-MiniLM-L6-v2` was built and measured first, because at 384 dimensions it
+matches the old collection's size and is far cheaper to run. It is half the
+latency and clearly worse:
+
+| | top-1 correct | within top-3 | p50 |
+|-|-|-|-|
+| MiniLM-L6 | 75.5% | 85.7% | 59ms |
+| mxbai | 81.6% | 95.9% | 124ms |
+
+Losing 10 points of top-3 accuracy to save 65ms is the wrong trade for a demo
+whose entire job is returning the right category, so the collection was rebuilt
+on mxbai and the MiniLM one deleted.
+
+The first build indexed the 175 categories in `data/graph_en.json`. The live
+collection has 179, and the five missing ones include all of Pet Supplies, so
+the demo would have silently lost the ability to answer "cat food". The label
+set now comes from the collection itself.
+
+## Where This Stops Working
+
+**A cluster without Cloud Inference.** The function sends query text, not a
+vector, and nothing in this repository can embed. A cluster with inference off
+returns an error on every query rather than degrading.
+
+**Any language but English.** Stated above, and it is a real loss. If a
+multilingual model reaches the Cloud Inference catalog, re-running
+`indexer/build_en.py` against a translated label set is the whole fix.
+
+**A catalog much larger than this one.** 179 points is small enough that the
+search is effectively exact. A taxonomy of hundreds of thousands of categories
+would need the payload index and tuning that this demo does not have.
+
+**The query dot on the cluster map** is positioned by the frontend from the
+matched categories. The original UMAP projection is not bundled, and running it
+in a serverless function is not practical.
+
+## Checks
+
+```bash
+node --env-file=.env test/compare.mjs   # the accuracy and latency tables above
+node --env-file=.env test/serve.mjs     # the built frontend and the function on one port
+```

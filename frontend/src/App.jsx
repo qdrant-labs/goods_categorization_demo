@@ -14,10 +14,10 @@ import { categorize, embed, loadGraph } from "./lib/api";
 
 function App() {
   const [theme, setTheme] = useState("light");
-  const [query, setQuery] = useState("Система охлаждения CPU");
+  const [query, setQuery] = useState("CPU cooling system");
   // The query the results actually reflect — only updates on a real search, so
   // the "Top categories for …" title doesn't change while you're still typing.
-  const [submittedQuery, setSubmittedQuery] = useState("Система охлаждения CPU");
+  const [submittedQuery, setSubmittedQuery] = useState("CPU cooling system");
   const [categories, setCategories] = useState([]);
   const [graph, setGraph] = useState([]);
   const [loading, setLoading] = useState(false);
