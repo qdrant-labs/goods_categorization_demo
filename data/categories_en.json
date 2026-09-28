@@ -1,0 +1,718 @@
+[
+  {
+    "top_category": "Auto",
+    "category": "Accessories and equipment"
+  },
+  {
+    "top_category": "Auto",
+    "category": "Anti-theft devices"
+  },
+  {
+    "top_category": "Auto",
+    "category": "Audio and video"
+  },
+  {
+    "top_category": "Auto",
+    "category": "Automotive tools"
+  },
+  {
+    "top_category": "Auto",
+    "category": "Car chemicals and auto cosmetics"
+  },
+  {
+    "top_category": "Auto",
+    "category": "Electronics"
+  },
+  {
+    "top_category": "Auto",
+    "category": "Motorcycles"
+  },
+  {
+    "top_category": "Auto",
+    "category": "Oils and technical liquids"
+  },
+  {
+    "top_category": "Auto",
+    "category": "Parts"
+  },
+  {
+    "top_category": "Auto",
+    "category": "Special"
+  },
+  {
+    "top_category": "Auto",
+    "category": "Tires and wheels"
+  },
+  {
+    "top_category": "Auto",
+    "category": "Vehicles"
+  },
+  {
+    "top_category": "Beauty Products",
+    "category": "Cosmetics, perfumes and care"
+  },
+  {
+    "top_category": "Beauty Products",
+    "category": "Health and beauty technics"
+  },
+  {
+    "top_category": "Beauty Products",
+    "category": "Tools and hygiene"
+  },
+  {
+    "top_category": "Children Goods",
+    "category": "Children's sports"
+  },
+  {
+    "top_category": "Children Goods",
+    "category": "Development and training"
+  },
+  {
+    "top_category": "Children Goods",
+    "category": "Goods for moms and babies"
+  },
+  {
+    "top_category": "Children Goods",
+    "category": "Goods for school"
+  },
+  {
+    "top_category": "Children Goods",
+    "category": "Hobby and creativity"
+  },
+  {
+    "top_category": "Children Goods",
+    "category": "Toys and games"
+  },
+  {
+    "top_category": "Clothing, Shoes & Accessories",
+    "category": "Accessories"
+  },
+  {
+    "top_category": "Clothing, Shoes & Accessories",
+    "category": "Children's clothing"
+  },
+  {
+    "top_category": "Clothing, Shoes & Accessories",
+    "category": "Men's clothing"
+  },
+  {
+    "top_category": "Clothing, Shoes & Accessories",
+    "category": "Shoes"
+  },
+  {
+    "top_category": "Clothing, Shoes & Accessories",
+    "category": "Women's clothing"
+  },
+  {
+    "top_category": "Computers",
+    "category": "Accessories"
+  },
+  {
+    "top_category": "Computers",
+    "category": "Computers"
+  },
+  {
+    "top_category": "Computers",
+    "category": "Consumables"
+  },
+  {
+    "top_category": "Computers",
+    "category": "Equipment for presentations"
+  },
+  {
+    "top_category": "Computers",
+    "category": "Hardware"
+  },
+  {
+    "top_category": "Computers",
+    "category": "Networking"
+  },
+  {
+    "top_category": "Computers",
+    "category": "Peripherals"
+  },
+  {
+    "top_category": "Computers",
+    "category": "Software"
+  },
+  {
+    "top_category": "Computers",
+    "category": "Storage"
+  },
+  {
+    "top_category": "Computers",
+    "category": "Uninterruptible power supply"
+  },
+  {
+    "top_category": "Computers",
+    "category": "Workplace organization"
+  },
+  {
+    "top_category": "Construction and Repair",
+    "category": "Articles"
+  },
+  {
+    "top_category": "Construction and Repair",
+    "category": "Doors, windows and hardware"
+  },
+  {
+    "top_category": "Construction and Repair",
+    "category": "Electrical"
+  },
+  {
+    "top_category": "Construction and Repair",
+    "category": "Heating and ventilation"
+  },
+  {
+    "top_category": "Construction and Repair",
+    "category": "Plumbing"
+  },
+  {
+    "top_category": "Construction and Repair",
+    "category": "Tools"
+  },
+  {
+    "top_category": "Construction and Repair",
+    "category": "Water"
+  },
+  {
+    "top_category": "Cottage, orchard and garden",
+    "category": "Closets and accessories"
+  },
+  {
+    "top_category": "Cottage, orchard and garden",
+    "category": "Fertilizers and plant care"
+  },
+  {
+    "top_category": "Cottage, orchard and garden",
+    "category": "Fountains and ponds"
+  },
+  {
+    "top_category": "Cottage, orchard and garden",
+    "category": "Garden decor"
+  },
+  {
+    "top_category": "Cottage, orchard and garden",
+    "category": "Garden furniture"
+  },
+  {
+    "top_category": "Cottage, orchard and garden",
+    "category": "Garden products"
+  },
+  {
+    "top_category": "Cottage, orchard and garden",
+    "category": "Garden tools and instruments"
+  },
+  {
+    "top_category": "Cottage, orchard and garden",
+    "category": "Greenhouses"
+  },
+  {
+    "top_category": "Cottage, orchard and garden",
+    "category": "Picnic, barbecue, grill"
+  },
+  {
+    "top_category": "Cottage, orchard and garden",
+    "category": "Pools and accessories"
+  },
+  {
+    "top_category": "Cottage, orchard and garden",
+    "category": "Saunas"
+  },
+  {
+    "top_category": "Cottage, orchard and garden",
+    "category": "Seeds and seedlings"
+  },
+  {
+    "top_category": "Cottage, orchard and garden",
+    "category": "Showers and washbasins"
+  },
+  {
+    "top_category": "Electronics",
+    "category": "Audio and video"
+  },
+  {
+    "top_category": "Electronics",
+    "category": "Camera and camcorder"
+  },
+  {
+    "top_category": "Electronics",
+    "category": "Gps-navigation"
+  },
+  {
+    "top_category": "Electronics",
+    "category": "Guarantee certificate"
+  },
+  {
+    "top_category": "Electronics",
+    "category": "Optical instruments"
+  },
+  {
+    "top_category": "Electronics",
+    "category": "Phones"
+  },
+  {
+    "top_category": "Electronics",
+    "category": "Portable equipment"
+  },
+  {
+    "top_category": "Electronics",
+    "category": "Video game console"
+  },
+  {
+    "top_category": "Equipment",
+    "category": "Advertising constructions materials"
+  },
+  {
+    "top_category": "Equipment",
+    "category": "Alarms & security"
+  },
+  {
+    "top_category": "Equipment",
+    "category": "Bank equipment"
+  },
+  {
+    "top_category": "Equipment",
+    "category": "Cleaning and washing technics"
+  },
+  {
+    "top_category": "Equipment",
+    "category": "Clothing and footwear"
+  },
+  {
+    "top_category": "Equipment",
+    "category": "Construction"
+  },
+  {
+    "top_category": "Equipment",
+    "category": "Equipment for repairing electronics"
+  },
+  {
+    "top_category": "Equipment",
+    "category": "Food equipment"
+  },
+  {
+    "top_category": "Equipment",
+    "category": "Industrial equipment climatic"
+  },
+  {
+    "top_category": "Equipment",
+    "category": "Industrial production"
+  },
+  {
+    "top_category": "Equipment",
+    "category": "Laboratory equipment"
+  },
+  {
+    "top_category": "Equipment",
+    "category": "Lift equipment"
+  },
+  {
+    "top_category": "Equipment",
+    "category": "Placards"
+  },
+  {
+    "top_category": "Equipment",
+    "category": "Printing and publishing services"
+  },
+  {
+    "top_category": "Equipment",
+    "category": "Scales for animals"
+  },
+  {
+    "top_category": "Equipment",
+    "category": "Services"
+  },
+  {
+    "top_category": "Equipment",
+    "category": "Shops equipment"
+  },
+  {
+    "top_category": "Equipment",
+    "category": "Stage and audio equipment"
+  },
+  {
+    "top_category": "Equipment",
+    "category": "Warning labels"
+  },
+  {
+    "top_category": "Food",
+    "category": "All baking"
+  },
+  {
+    "top_category": "Food",
+    "category": "Bread and pastries"
+  },
+  {
+    "top_category": "Food",
+    "category": "Confectionery"
+  },
+  {
+    "top_category": "Food",
+    "category": "Cooking"
+  },
+  {
+    "top_category": "Food",
+    "category": "Dietary and health food"
+  },
+  {
+    "top_category": "Food",
+    "category": "Drink"
+  },
+  {
+    "top_category": "Food",
+    "category": "Fish gastronomy"
+  },
+  {
+    "top_category": "Food",
+    "category": "Frozen products"
+  },
+  {
+    "top_category": "Food",
+    "category": "Fruits, vegetables and mushrooms"
+  },
+  {
+    "top_category": "Food",
+    "category": "Groceries"
+  },
+  {
+    "top_category": "Food",
+    "category": "Heating systems, electronic vaporizers and accessories"
+  },
+  {
+    "top_category": "Food",
+    "category": "Meat gastronomy"
+  },
+  {
+    "top_category": "Food",
+    "category": "Milk gastronomy"
+  },
+  {
+    "top_category": "Food",
+    "category": "Non-alcoholic beer and wine"
+  },
+  {
+    "top_category": "Food",
+    "category": "Preservation"
+  },
+  {
+    "top_category": "Food",
+    "category": "Soft drinks"
+  },
+  {
+    "top_category": "Health Products",
+    "category": "Adult toys"
+  },
+  {
+    "top_category": "Health Products",
+    "category": "Diagnostic tests"
+  },
+  {
+    "top_category": "Health Products",
+    "category": "Disinfectants"
+  },
+  {
+    "top_category": "Health Products",
+    "category": "Massagers"
+  },
+  {
+    "top_category": "Health Products",
+    "category": "Medical articles"
+  },
+  {
+    "top_category": "Health Products",
+    "category": "Medical devices"
+  },
+  {
+    "top_category": "Health Products",
+    "category": "Medical products"
+  },
+  {
+    "top_category": "Health Products",
+    "category": "Medications and supplements"
+  },
+  {
+    "top_category": "Health Products",
+    "category": "Medicinal plants"
+  },
+  {
+    "top_category": "Health Products",
+    "category": "Nursing"
+  },
+  {
+    "top_category": "Health Products",
+    "category": "Optics"
+  },
+  {
+    "top_category": "Health Products",
+    "category": "Orthopedic products"
+  },
+  {
+    "top_category": "Health Products",
+    "category": "Power special purpose"
+  },
+  {
+    "top_category": "Health Products",
+    "category": "Traditional medicine"
+  },
+  {
+    "top_category": "Health Products",
+    "category": "Vitamins and minerals"
+  },
+  {
+    "top_category": "Household Appliances",
+    "category": "Beauty equipment"
+  },
+  {
+    "top_category": "Household Appliances",
+    "category": "Built-in appliances"
+  },
+  {
+    "top_category": "Household Appliances",
+    "category": "Climate technology"
+  },
+  {
+    "top_category": "Household Appliances",
+    "category": "Home appliances"
+  },
+  {
+    "top_category": "Household Appliances",
+    "category": "Kitchen appliances"
+  },
+  {
+    "top_category": "Household Appliances",
+    "category": "Large kitchen appliances"
+  },
+  {
+    "top_category": "Household Appliances",
+    "category": "Small kitchen appliances"
+  },
+  {
+    "top_category": "Household Goods",
+    "category": "Furniture"
+  },
+  {
+    "top_category": "Household Goods",
+    "category": "Household chemical goods"
+  },
+  {
+    "top_category": "Household Goods",
+    "category": "Household goods"
+  },
+  {
+    "top_category": "Household Goods",
+    "category": "Interior"
+  },
+  {
+    "top_category": "Household Goods",
+    "category": "Lighting"
+  },
+  {
+    "top_category": "Household Goods",
+    "category": "Products for the holidays"
+  },
+  {
+    "top_category": "Household Goods",
+    "category": "Textiles"
+  },
+  {
+    "top_category": "Leisure and Entertainment",
+    "category": "Divination and prediction"
+  },
+  {
+    "top_category": "Leisure and Entertainment",
+    "category": "Flags and coats of arms"
+  },
+  {
+    "top_category": "Leisure and Entertainment",
+    "category": "Funeral flowers"
+  },
+  {
+    "top_category": "Leisure and Entertainment",
+    "category": "Games for companies"
+  },
+  {
+    "top_category": "Leisure and Entertainment",
+    "category": "Gift certificates"
+  },
+  {
+    "top_category": "Leisure and Entertainment",
+    "category": "Gift sets"
+  },
+  {
+    "top_category": "Leisure and Entertainment",
+    "category": "Hookahs and accessories"
+  },
+  {
+    "top_category": "Leisure and Entertainment",
+    "category": "Icons and church utensils"
+  },
+  {
+    "top_category": "Leisure and Entertainment",
+    "category": "Movies"
+  },
+  {
+    "top_category": "Leisure and Entertainment",
+    "category": "Music"
+  },
+  {
+    "top_category": "Leisure and Entertainment",
+    "category": "Musical instruments"
+  },
+  {
+    "top_category": "Leisure and Entertainment",
+    "category": "Numismatics and philately"
+  },
+  {
+    "top_category": "Leisure and Entertainment",
+    "category": "Online subscription and payment cards"
+  },
+  {
+    "top_category": "Leisure and Entertainment",
+    "category": "Ritual goods"
+  },
+  {
+    "top_category": "Leisure and Entertainment",
+    "category": "Souvenirs"
+  },
+  {
+    "top_category": "Leisure and Entertainment",
+    "category": "Tickets"
+  },
+  {
+    "top_category": "Leisure and Entertainment",
+    "category": "Tours"
+  },
+  {
+    "top_category": "Pet Supplies",
+    "category": "Aquarium and fish"
+  },
+  {
+    "top_category": "Pet Supplies",
+    "category": "Cages and habitats"
+  },
+  {
+    "top_category": "Pet Supplies",
+    "category": "Cat litter and hygiene"
+  },
+  {
+    "top_category": "Pet Supplies",
+    "category": "Pet accessories"
+  },
+  {
+    "top_category": "Pet Supplies",
+    "category": "Pet food"
+  },
+  {
+    "top_category": "Services",
+    "category": "Financial services"
+  },
+  {
+    "top_category": "Services",
+    "category": "Funerals"
+  },
+  {
+    "top_category": "Services",
+    "category": "Insurance"
+  },
+  {
+    "top_category": "Services",
+    "category": "Legal services"
+  },
+  {
+    "top_category": "Services",
+    "category": "Maintenance"
+  },
+  {
+    "top_category": "Services",
+    "category": "Marketing, advertising, pr"
+  },
+  {
+    "top_category": "Services",
+    "category": "Medical services"
+  },
+  {
+    "top_category": "Services",
+    "category": "Services in the field of beauty"
+  },
+  {
+    "top_category": "Services",
+    "category": "Training, seminars and workshops"
+  },
+  {
+    "top_category": "Services",
+    "category": "Transportation services"
+  },
+  {
+    "top_category": "Services",
+    "category": "Web hosting and domain registration"
+  },
+  {
+    "top_category": "Sports & Recreation",
+    "category": "Blisks and giroskutery"
+  },
+  {
+    "top_category": "Sports & Recreation",
+    "category": "Boxing and martial arts"
+  },
+  {
+    "top_category": "Sports & Recreation",
+    "category": "Cycling"
+  },
+  {
+    "top_category": "Sports & Recreation",
+    "category": "Equestrian"
+  },
+  {
+    "top_category": "Sports & Recreation",
+    "category": "Extreme sports"
+  },
+  {
+    "top_category": "Sports & Recreation",
+    "category": "Games"
+  },
+  {
+    "top_category": "Sports & Recreation",
+    "category": "Hunting and fishing"
+  },
+  {
+    "top_category": "Sports & Recreation",
+    "category": "Roller skates"
+  },
+  {
+    "top_category": "Sports & Recreation",
+    "category": "Scooters"
+  },
+  {
+    "top_category": "Sports & Recreation",
+    "category": "Shooting sports"
+  },
+  {
+    "top_category": "Sports & Recreation",
+    "category": "Simulators and fitness"
+  },
+  {
+    "top_category": "Sports & Recreation",
+    "category": "Skateboarding"
+  },
+  {
+    "top_category": "Sports & Recreation",
+    "category": "Sport protection"
+  },
+  {
+    "top_category": "Sports & Recreation",
+    "category": "Team sports"
+  },
+  {
+    "top_category": "Sports & Recreation",
+    "category": "Tourism and outdoor recreation"
+  },
+  {
+    "top_category": "Sports & Recreation",
+    "category": "Water sports"
+  },
+  {
+    "top_category": "Sports & Recreation",
+    "category": "Winter sports"
+  }
+]
